@@ -11,10 +11,10 @@
          syntaxCheck="false"
          bootstrap="test/bootstrap.php">
     <testsuites>
-        <testsuite name="Webstalk Unit Test Suite">
+        <testsuite name="Unit">
             <directory>./test/unit</directory>
         </testsuite>
-        <testsuite name="Webstalk Integration Test Suite">
+        <testsuite name="Integration">
             <directory>./test/integration</directory>
         </testsuite>
     </testsuites>
