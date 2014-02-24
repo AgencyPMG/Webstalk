@@ -1,5 +1,5 @@
 /vendor/*
-/coverate/*
+/coverage/*
 /composer.lock
 /composer.phar
 
