@@ -16,17 +16,8 @@ namespace PMG\Webstalk\Entity;
  * @since   1.0
  * @author  Christopher Davis <chris@pmg.co>
  */
-class DefaultServerCollection implements ServerCollection
+class DefaultServerCollection extends \ArrayObject implements ServerCollection
 {
-    /**
-     * The servers in this collection.
-     *
-     * @since   1.0
-     * @access  private
-     * @var     Server[]
-     */
-    private $servers = array();
-
     /**
      * Constructor. Optionally pass in an array of servers.
      *
@@ -47,20 +38,25 @@ class DefaultServerCollection implements ServerCollection
      */
     public function addServer(Server $server)
     {
-        $this->servers[] = $server;
+        $this->offsetSEt($this->getKey($server), $server);
     }
 
-    /** Countable *************************************************************/
-
-    public function count()
+    /**
+     * {@inheritdoc}
+     */
+    public function removeServer(Server $server)
     {
-        return count($this->servers);
+        $key = $this->getKey($server);
+        if ($this->offsetExists($key)) {
+            $this->offsetUnset($key);
+            return true;
+        }
+
+        return false;
     }
 
-    /** IteratorAggregate *****************************************************/
-
-    public function getIterator()
+    private function getKey(Server $server)
     {
-        return new \ArrayIterator($this->servers);
+        return sprintf('%s:%s', $server->getHost(), $server->getPort());
     }
 }

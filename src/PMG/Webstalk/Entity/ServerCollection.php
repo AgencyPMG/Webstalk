@@ -16,7 +16,7 @@ namespace PMG\Webstalk\Entity;
  * @since   1.0
  * @author  Christopher Davis <chris@pmg.co>
  */
-interface ServerCollection extends \IteratorAggregate, \Countable
+interface ServerCollection extends \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**
      * Add a new sever.
@@ -27,4 +27,14 @@ interface ServerCollection extends \IteratorAggregate, \Countable
      * @return  void
      */
     public function addServer(Server $server);
+
+    /**
+     * Remove an server that already exists.
+     *
+     * @since   1.0
+     * @access  public
+     * @param   Server $server
+     * @return  boolean True if the server was removed
+     */
+    public function removeServer(Server $server);
 }

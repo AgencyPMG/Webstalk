@@ -12,7 +12,7 @@ namespace PMG\Webstalk\Entity;
 
 class DefaultServerCollectionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCount()
+    public function testCountable()
     {
         $m = $this->getMock('PMG\\Webstalk\\Entity\\Server');
 
@@ -32,5 +32,22 @@ class DefaultServerCollectionTest extends \PHPUnit_Framework_TestCase
         foreach ($col as $server) {
             $this->assertSame($m, $server);
         }
+    }
+
+    public function testAddRemoveServer()
+    {
+        $m = $this->getMock('PMG\\Webstalk\\Entity\\Server');
+        $m->expects($this->exactly(3))
+            ->method('getHost')
+            ->will($this->returnValue('localhost'));
+        $m->expects($this->exactly(3))
+            ->method('getPort')
+            ->will($this->returnValue(10000));
+
+        $col = new DefaultServerCollection();
+
+        $col->addServer($m);
+        $this->assertTrue($col->removeServer($m));
+        $this->assertFalse($col->removeServer($m));
     }
 }
