@@ -66,4 +66,24 @@ class WebstalkController
         $this->factory = $factory;
         $this->servers = $servers;
     }
+
+    /**
+     * List all the servers along with their server stats.
+     *
+     * @since   1.0
+     * @access  public
+     * @return  string
+     */
+    public function listServersAction()
+    {
+        $servers = array();
+        foreach ($this->servers as $key => $server) {
+            $conn = $this->factory->create($server);
+            $servers[$key] = $conn->getServerStats();
+        }
+
+        return $this->templates->render('@webstalk/servers.html.twig', array(
+            'servers'   => $servers,
+        ));
+    }
 }
