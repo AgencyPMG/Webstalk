@@ -5,14 +5,34 @@
 {% block content %}
 <h1 class="webstalk-title">Servers</h1>
 
-{% for server in servers %}
-<div class="webstalk-server">
-    <h3>{{ server.server.getDisplayName() }}</h3>
-    <ul class="webstalk-stats-list">
-        {% for key, val in server.statistics %}
-        <li><strong>{{ key }}:</strong> {{ val }}</li>
-        {% endfor %}
-    </ul>
+<ul class="breadcrumbs">
+    <li class="current">
+        <a href="{{ url('webstalk.servers') }}">Webstalk</a>
+    </li>
+</ul>
+
+<dl class="tabs vertical webstalk-tabs" data-tab>
+    {% for key, server in servers %}
+    <dd {% if loop.first %}class="active"{% endif %}>
+        <a href="#server-{{ key }}">{{ server.server.getDisplayName() }}</a>
+    </dd>
+    {% endfor %}
+</dl>
+<div class="tabs-content vertical webstalk-tab-content">
+    {% for key, server in servers %}
+    <div class="webstalk-server content {% if loop.first %}active{% endif %}" id="server-{{ key }}">
+        <h3>
+            {{ server.server.getDisplayName() }}
+        </h3>
+        <p>
+            <a href="{{ url('webstalk.tubes', {'slug': key}) }}" class="button small">Details</a>
+        </p>
+        <ul class="webstalk-stats-list">
+            {% for key, val in server.statistics %}
+            <li><strong>{{ key }}:</strong> {{ val }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}

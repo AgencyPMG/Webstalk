@@ -3,16 +3,32 @@
 {% block title %}{{ server.getDisplayName() }} Tubes{% endblock %}
 
 {% block content %}
-<h1 class="webstalk-title">{{ server.getDisplayName() }}</h1>
+<h1 class="webstalk-title">{{ server.getDisplayName() }} Tubes</h1>
 
-{% for tube, stats in tubes %}
-<div class="webstalk-tube">
-    <h3>{{ tube }}</h3>
-    <ul class="webstalk-stats-list">
-        {% for key, val in stats %}
-        <li><strong>{{ key }}:</strong> {{ val }}</li>
-        {% endfor %}
-    </ul>
+<ul class="breadcrumbs">
+    <li>
+        <a href="{{ url('webstalk.servers') }}">Webstalk</a>
+    </li>
+    <li class="current">{{ server.getDisplayName() }}</li>
+</ul>
+
+<dl class="tabs vertical webstalk-tabs" data-tab>
+    {% for tube, stats in tubes %}
+        <dd {% if loop.first %}class="active"{% endif %}>
+            <a href="#tube-{{ tube }}">{{ tube }}</a>
+        </dd>
+    {% endfor %}
+</dl>
+<div class="tabs-content vertical webstalk-tab-content">
+    {% for tube, stats in tubes %}
+    <div class="content {% if loop.first %}active{% endif %}" id="tube-{{ tube }}">
+        <h3>{{ tube }}</h3>
+        <ul class="webstalk-stats-list">
+            {% for key, val in stats %}
+                <li><strong>{{ key }}:</strong> {{ val }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}
