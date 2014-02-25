@@ -10,6 +10,7 @@
 
 namespace PMG\Webstalk\Controller;
 
+use PMG\Webstalk\Entity\DefaultTubeList;
 use PMG\Webstalk\Entity\DefaultStatistics;
 use PMG\Webstalk\Entity\DefaultServer;
 use PMG\Webstalk\Entity\DefaultServerCollection;
@@ -37,6 +38,28 @@ class WebstalkControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('rendered', $this->controller->listServersAction());
     }
 
+    public function testServerStatsAction()
+    {
+        $this->factory->expects($this->once())
+            ->method('create')
+            ->with($this->identicalTo($this->server))
+            ->will($this->returnValue($this->conn));
+
+        $this->conn->expects($this->once())
+            ->method('getTubes')
+            ->will($this->returnValue(new DefaultTubeList()));
+
+        $this->templates->expects($this->once())
+            ->method('render')
+            ->with($this->isType('string'), $this->logicalAnd(
+                $this->arrayHasKey('tubes'),
+                $this->arrayHasKey('server')
+            ))
+            ->will($this->returnValue('rendered'));
+
+        $this->assertEquals('rendered', $this->controller->listTubesAction('default'));
+    }
+
     protected function setUp()
     {
         $this->templates = $this->getMock('PMG\\Webstalk\\Adapter\\TemplateEngine');
@@ -45,7 +68,7 @@ class WebstalkControllerTest extends \PHPUnit_Framework_TestCase
 
         // no mocking the value objects
         $this->server = new DefaultServer('localhost', 11300, 'Default');
-        $this->servers = new DefaultServerCollection([$this->server]);
+        $this->servers = new DefaultServerCollection(['default' => $this->server]);
 
         $this->controller = new WebstalkController(
             $this->templates,

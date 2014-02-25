@@ -86,4 +86,24 @@ class WebstalkController
             'servers'   => $servers,
         ));
     }
+
+    /**
+     * Get the statistics for a single server.
+     *
+     * @since   1.0
+     * @access  public
+     * @param   string $slug The server slug
+     * @return  string
+     */
+    public function listTubesAction($slug)
+    {
+        $server = $this->servers->getServer($slug);
+        $conn = $this->factory->create($server);
+        $tubeList = $conn->getTubes();
+
+        return $this->templates->render('@webstalk/tubes.html.twig', array(
+            'server'    => $server,
+            'tubes'     => $tubeList,
+        ));
+    }
 }
