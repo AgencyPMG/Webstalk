@@ -16,25 +16,47 @@ namespace PMG\Webstalk\Entity;
  * @since   1.0
  * @author  Christopher Davis <chris@pmg.co>
  */
-interface ServerCollection extends \IteratorAggregate, \ArrayAccess, \Countable
+interface ServerCollection extends \IteratorAggregate, \Countable
 {
     /**
      * Add a new sever.
      *
      * @since   1.0
      * @access  public
-     * @param   Server
+     * @param   string $key The servers slug -- should be [a-z0-9-_]
+     * @param   Server $server
      * @return  void
      */
-    public function addServer(Server $server);
+    public function addServer($slug, Server $server);
+
+    /**
+     * Get a server by it's key.
+     *
+     * @since   1.0
+     * @access  public
+     * @param   string $key
+     * @throws  ServerNotFoundException if the server doesn't exist in the collection
+     * @return  Server
+     */
+    public function getServer($slug);
 
     /**
      * Remove an server that already exists.
      *
      * @since   1.0
      * @access  public
-     * @param   Server $server
+     * @param   string $key the servers "slug"
      * @return  boolean True if the server was removed
      */
-    public function removeServer(Server $server);
+    public function removeServer($slug);
+
+    /**
+     * Check if a server exists.
+     *
+     * @since   1.0
+     * @access  public
+     * @param   string $key The server's "slug"
+     * @return  boolean
+     */
+    public function hasServer($slug);
 }

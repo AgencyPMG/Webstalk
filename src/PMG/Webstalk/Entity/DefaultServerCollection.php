@@ -10,14 +10,25 @@
 
 namespace PMG\Webstalk\Entity;
 
+use PMG\Webstalk\Exception\ServerNotFoundException;
+
 /**
  * Default implementation of ServerCollection
  *
  * @since   1.0
  * @author  Christopher Davis <chris@pmg.co>
  */
-class DefaultServerCollection extends \ArrayObject implements ServerCollection
+class DefaultServerCollection implements ServerCollection
 {
+    /**
+     * The internal storage.
+     *
+     * @since   1.0
+     * @access  private
+     * @var     array
+     */
+    private $servers = array();
+
     /**
      * Constructor. Optionally pass in an array of servers.
      *
@@ -28,35 +39,63 @@ class DefaultServerCollection extends \ArrayObject implements ServerCollection
      */
     public function __construct(array $servers=array())
     {
-        foreach ($servers as $server) {
-            $this->addServer($server);
+        foreach ($servers as $key => $server) {
+            $this->addServer($key, $server);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addServer(Server $server)
+    public function addServer($slug, Server $server)
     {
-        $this->offsetSEt($this->getKey($server), $server);
+        $this->servers[$slug] = $server;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeServer(Server $server)
+    public function getServer($slug)
     {
-        $key = $this->getKey($server);
-        if ($this->offsetExists($key)) {
-            $this->offsetUnset($key);
+        if (!$this->hasServer($slug)) {
+            throw new ServerNotFoundException(sprintf('Server "%s" does not exist', $slug));
+        }
+
+        return $this->servers[$slug];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeServer($slug)
+    {
+        if ($this->hasServer($slug)) {
+            unset($this->servers[$slug]);
             return true;
         }
 
         return false;
     }
 
-    private function getKey(Server $server)
+    /**
+     * {@inheritdoc}
+     */
+    public function hasServer($slug)
     {
-        return sprintf('%s:%s', $server->getHost(), $server->getPort());
+        return isset($this->servers[$slug]);
+    }
+
+    /** Countable *************************************************************/
+
+    public function count()
+    {
+        return count($this->servers);
+    }
+
+    /** IteratorAggregate *****************************************************/
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->servers);
     }
 }

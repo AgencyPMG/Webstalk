@@ -16,7 +16,7 @@ class DefaultServerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $m = $this->getMock('PMG\\Webstalk\\Entity\\Server');
 
-        $col = new DefaultServerCollection([$m]);
+        $col = new DefaultServerCollection(['default' => $m]);
 
         $this->assertCount(1, $col);
     }
@@ -37,17 +37,22 @@ class DefaultServerCollectionTest extends \PHPUnit_Framework_TestCase
     public function testAddRemoveServer()
     {
         $m = $this->getMock('PMG\\Webstalk\\Entity\\Server');
-        $m->expects($this->exactly(3))
-            ->method('getHost')
-            ->will($this->returnValue('localhost'));
-        $m->expects($this->exactly(3))
-            ->method('getPort')
-            ->will($this->returnValue(10000));
 
         $col = new DefaultServerCollection();
 
-        $col->addServer($m);
-        $this->assertTrue($col->removeServer($m));
-        $this->assertFalse($col->removeServer($m));
+        $col->addServer('yep', $m);
+        $this->assertTrue($col->hasServer('yep'));
+        $this->assertSame($m, $col->getServer('yep'));
+        $this->assertTrue($col->removeServer('yep'));
+        $this->assertFalse($col->removeServer('yep'));
+    }
+
+    /**
+     * @expectedException PMG\Webstalk\Exception\ServerNotFoundException
+     */
+    public function testGetServerWithoutServer()
+    {
+        $col = new DefaultServerCollection();
+        $col->getServer('does_not_exist');
     }
 }
