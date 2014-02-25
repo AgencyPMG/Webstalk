@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="/vendor/normalize.css" />
+        {% endblock %}
+    </head>
+    <body>
+        <div class="webstalk-wrap">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

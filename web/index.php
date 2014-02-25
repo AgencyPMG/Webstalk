@@ -10,8 +10,19 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
+use PMG\Webstalk\Provider\WebstalkServiceProvider;
+use PMG\Webstalk\Provider\WebstalkControllerProvider;
+
 $app = new \Silex\Application();
 
 $app['debug'] = true;
+
+$app->register(new TwigServiceProvider());
+$app->register(new ServiceControllerServiceProvider());
+$app->register(new WebstalkServiceProvider());
+$app->mount('/', new WebstalkControllerProvider());
 
 $app->run();

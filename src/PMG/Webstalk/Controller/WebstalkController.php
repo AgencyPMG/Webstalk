@@ -79,7 +79,10 @@ class WebstalkController
         $servers = array();
         foreach ($this->servers as $key => $server) {
             $conn = $this->factory->create($server);
-            $servers[$key] = $conn->getServerStats();
+            $servers[$key] = array(
+                'server'        => $server,
+                'statistics'    => $conn->getServerStats(),
+            );
         }
 
         return $this->templates->render('@webstalk/servers.html.twig', array(
