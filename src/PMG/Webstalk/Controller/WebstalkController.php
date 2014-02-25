@@ -12,6 +12,7 @@ namespace PMG\Webstalk\Controller;
 
 use PMG\Webstalk\Entity\ServerCollection;
 use PMG\Webstalk\Adapter\AdapterFactory;
+use PMG\Webstalk\Adapter\TemplateEngine;
 
 /**
  * Displays information about the beanstalkd servers to users.
@@ -26,9 +27,9 @@ class WebstalkController
      *
      * @since   1.0
      * @access  private
-     * @var     \Twig_Environment
+     * @var     TemplateEngine
      */
-    private $twig;
+    private $templates;
 
     /**
      * The adapter factory. A bit of syntactic sugar to handle accessing the
@@ -54,14 +55,14 @@ class WebstalkController
      *
      * @since   1.0
      * @access  public
-     * @param   Twig_Environment $twig
+     * @param   TemplateEngine $template
      * @param   AdapterFactory $factor
      * @param   array $server
      * @return  void
      */
-    public function __construct(\Twig_Environment $twig, AdapterFactory $factory, ServerCollection $servers)
+    public function __construct(TemplateEngine $templates, AdapterFactory $factory, ServerCollection $servers)
     {
-        $this->twig = $twig;
+        $this->templates = $templates;
         $this->factory = $factory;
         $this->servers = $servers;
     }

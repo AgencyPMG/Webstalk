@@ -21,6 +21,7 @@ class WebstalkServiceProviderTest extends \PHPUnit_Framework_TestCase
             ['webstalk.controllers', 'Silex\\ControllerCollection'],
             ['webstalk.factory', 'PMG\\Webstalk\\Adapter\\AdapterFactory'],
             ['webstalk.servers', 'PMG\\Webstalk\\Entity\\ServerCollection'],
+            ['webstalk.templates', 'PMG\\Webstalk\\Adapter\\TemplateEngine'],
             ['webstalk.controller', 'PMG\\Webstalk\\Controller\\WebstalkController']
         ];
     }

@@ -12,6 +12,7 @@ namespace PMG\Webstalk\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use PMG\Webstalk\Adapter\TwigTemplateEngine;
 use PMG\Webstalk\Entity\DefaultServer;
 use PMG\Webstalk\Entity\DefaultServerCollection;
 use PMG\Webstalk\Controller\WebstalkController;
@@ -56,13 +57,22 @@ class WebstalkServiceProvider implements ServiceProviderInterface
             return new DefaultServerCollection([$server]);
         });
 
+        $app['webstalk.templates'] = $app->share(function ($app) {
+            return new TwigTemplateEngine($app['twig']);
+        });
+
         $app['webstalk.controller'] = $app->share(function ($app) {
             return new WebstalkController(
-                $app['twig'],
+                $app['webstalk.templates'],
                 $app['webstalk.factory'],
                 $app['webstalk.servers']
             );
         });
+
+        $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem', function ($loader) {
+            $loader->addPath(__DIR__ . '/../Resources/views', 'webstalk');
+            return $loader;
+        }));
     }
 
     // @codeCoverageIgnoreStart
