@@ -1,0 +1,18 @@
+{% extends '@webstalk/layout.html.twig' %}
+
+{% block title %}{{ server.getDisplayName() }} Tubes{% endblock %}
+
+{% block content %}
+<h1 class="webstalk-title">{{ server.getDisplayName() }}</h1>
+
+{% for tube, stats in tubes %}
+<div class="webstalk-tube">
+    <h3>{{ tube }}</h3>
+    <ul class="webstalk-stats-list">
+        {% for key, val in stats %}
+        <li><strong>{{ key }}:</strong> {{ val }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}

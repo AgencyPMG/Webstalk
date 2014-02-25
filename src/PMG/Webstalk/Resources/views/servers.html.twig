@@ -3,13 +3,16 @@
 {% block title %}Beanstalkd Servers{% endblock %}
 
 {% block content %}
-<div class=
 <h1 class="webstalk-title">Servers</h1>
 
 {% for server in servers %}
 <div class="webstalk-server">
     <h3>{{ server.server.getDisplayName() }}</h3>
-
+    <ul class="webstalk-stats-list">
+        {% for key, val in server.statistics %}
+        <li><strong>{{ key }}:</strong> {{ val }}</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endfor %}
 {% endblock %}
