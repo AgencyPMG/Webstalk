@@ -32,7 +32,7 @@ class WebstalkControllerProvider implements ControllerProviderInterface
             ->bind('webstalk.servers');
 
         $c->get('/{slug}/', 'webstalk.controller:listTubesAction')
-            ->assert('slug', '[A-Za-z0-9-_.]')
+            ->assert('slug', '[A-Za-z0-9_.-]+')
             ->bind('webstalk.tubes');
 
         return $c;
