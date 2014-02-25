@@ -1,0 +1,22 @@
+{
+    "name": "pmg/webstalk"
+    , "description": "A web frontend for beanstalkd stats"
+    , "version": "1.0"
+    , "homepage": "https://github.com/AgencyPMG/Webstalk"
+    , "authors": [
+        "Chris Davis <chris@pmg.co>"
+    ]
+    , "license": "Apache-2.0"
+    , "dependencies": {
+        "jquery": "latest"
+        , "foundation": "latest"
+        , "normalize.css": "latest"
+    }
+    , "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
