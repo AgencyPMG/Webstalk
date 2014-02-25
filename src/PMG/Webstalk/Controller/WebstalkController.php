@@ -10,6 +10,9 @@
 
 namespace PMG\Webstalk\Controller;
 
+use PMG\Webstalk\Entity\ServerCollection;
+use PMG\Webstalk\Adapter\AdapterFactory;
+
 /**
  * Displays information about the beanstalkd servers to users.
  *

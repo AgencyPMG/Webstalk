@@ -1,0 +1,74 @@
+<?php
+/**
+ * This File is Part of Webstalk
+ *
+ * @since       1.0
+ * @package     PMG\Webstalk
+ * @copyright   2014 PMG <http://pmg.co>
+ * @license     http://opensource.org/licenses/Apache-2.0 Apache-2.0
+ */
+
+namespace PMG\Webstalk\Provider;
+
+use Silex\Application;
+use Silex\ServiceProviderInterface;
+use PMG\Webstalk\Entity\DefaultServer;
+use PMG\Webstalk\Entity\DefaultServerCollection;
+use PMG\Webstalk\Controller\WebstalkController;
+
+/**
+ * Integrates our webstalk classes with silex.
+ *
+ * @since   1.0
+ * @author  Christopher Davis <chris@pmg.co>
+ */
+class WebstalkServiceProvider implements ServiceProviderInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function register(Application $app)
+    {
+        // define our own service for a controllers factory, let's users hook
+        // in an extend it should they choose.
+        $app['webstalk.controllers'] = function ($app) {
+            return $app['controllers_factory'];
+        };
+
+        $app['webstalk.factory.class'] = 'PMG\\Webstalk\\Adapter\\PheanstalkAdapterFactory';
+        $app['webstalk.factory'] = $app->share(function ($app) {
+            return new $app['webstalk.factory.class']();
+        });
+
+        $app['webstalk.default_server'] = [
+            'name'  => 'Default',
+            'host'  => 'localhost',
+            'port'  => 11300,
+        ];
+
+        $app['webstalk.servers'] = $app->share(function ($app) {
+            $server = new DefaultServer(
+                $app['webstalk.default_server']['host'],
+                $app['webstalk.default_server']['port'],
+                $app['webstalk.default_server']['name']
+            );
+
+            return new DefaultServerCollection([$server]);
+        });
+
+        $app['webstalk.controller'] = $app->share(function ($app) {
+            return new WebstalkController(
+                $app['twig'],
+                $app['webstalk.factory'],
+                $app['webstalk.servers']
+            );
+        });
+    }
+
+    // @codeCoverageIgnoreStart
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app) { }
+    // @codeCoverageIgnoreEnd
+}
