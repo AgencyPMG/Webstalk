@@ -41,20 +41,25 @@ class WebstalkServiceProvider implements ServiceProviderInterface
             return new $app['webstalk.factory.class']();
         });
 
-        $app['webstalk.default_server'] = [
-            'name'  => 'Default',
-            'host'  => 'localhost',
-            'port'  => 11300,
+        $app['webstalk.default_servers'] = [
+            'default'   => [
+                'name'  => 'Default',
+                'host'  => 'localhost',
+                'port'  => 11300,
+            ]
         ];
 
         $app['webstalk.servers'] = $app->share(function ($app) {
-            $server = new DefaultServer(
-                $app['webstalk.default_server']['host'],
-                $app['webstalk.default_server']['port'],
-                $app['webstalk.default_server']['name']
-            );
+            $col = new DefaultServerCollection();
+            foreach ($app['webstalk.default_servers'] as $slug => $server) {
+                $col->addServer($slug, new DefaultServer(
+                    $server['host'],
+                    $server['port'],
+                    isset($server['name']) ? $server['name'] : null
+                ));
+            }
 
-            return new DefaultServerCollection([$server]);
+            return $col;
         });
 
         $app['webstalk.templates'] = $app->share(function ($app) {
