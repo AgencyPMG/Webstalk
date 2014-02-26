@@ -1,5 +1,7 @@
 # Webstalk
 
+[![Build Status](https://travis-ci.org/AgencyPMG/Webstalk.png?branch=master)](https://travis-ci.org/AgencyPMG/Webstalk)
+
 Webstalk is a simple web app for viewing [beanstalkd](https://github.com/kr/beanstalkd)
 server and tube statistics.
 
