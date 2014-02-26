@@ -15,6 +15,8 @@ use Silex\Provider\TwigServiceProvider;
 
 class WebstalkServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
+    private $app;
+
     public function instanceProvider()
     {
         return [
@@ -22,7 +24,8 @@ class WebstalkServiceProviderTest extends \PHPUnit_Framework_TestCase
             ['webstalk.factory', 'PMG\\Webstalk\\Adapter\\AdapterFactory'],
             ['webstalk.servers', 'PMG\\Webstalk\\Entity\\ServerCollection'],
             ['webstalk.templates', 'PMG\\Webstalk\\Adapter\\TemplateEngine'],
-            ['webstalk.controller', 'PMG\\Webstalk\\Controller\\WebstalkController']
+            ['webstalk.controller', 'PMG\\Webstalk\\Controller\\WebstalkController'],
+            ['webstalk.exception_converter', 'Symfony\\Component\\EventDispatcher\\EventSubscriberInterface'],
         ];
     }
 
@@ -33,6 +36,13 @@ class WebstalkServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue(isset($this->app[$key]));
         $this->assertInstanceOf($cls, $this->app[$key]);
+    }
+
+    public function testBoot()
+    {
+        // this should call our server provider's boot method -- as long as it
+        // doesn't throw or fail, we'll assume it worked.
+        $this->app->boot();
     }
 
     protected function setUp()

@@ -16,6 +16,7 @@ use PMG\Webstalk\Adapter\TwigTemplateEngine;
 use PMG\Webstalk\Entity\DefaultServer;
 use PMG\Webstalk\Entity\DefaultServerCollection;
 use PMG\Webstalk\Controller\WebstalkController;
+use PMG\Webstalk\EventListener\ExceptionConverterListener;
 
 /**
  * Integrates our webstalk classes with silex.
@@ -74,16 +75,21 @@ class WebstalkServiceProvider implements ServiceProviderInterface
             );
         });
 
+        $app['webstalk.exception_converter'] = $app->share(function ($app) {
+            return new ExceptionConverterListener();
+        });
+
         $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem', function ($loader) {
             $loader->addPath(__DIR__ . '/../Resources/views', 'webstalk');
             return $loader;
         }));
     }
 
-    // @codeCoverageIgnoreStart
     /**
      * {@inheritdoc}
      */
-    public function boot(Application $app) { }
-    // @codeCoverageIgnoreEnd
+    public function boot(Application $app)
+    {
+        $app['dispatcher']->addSubscriber($app['webstalk.exception_converter']);
+    }
 }
