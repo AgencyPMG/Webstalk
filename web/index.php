@@ -17,7 +17,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use PMG\Webstalk\Provider\WebstalkServiceProvider;
 use PMG\Webstalk\Provider\WebstalkControllerProvider;
 
-$app = new \Silex\Application();
+$app = new Application();
 
 $app['debug'] = true;
 
