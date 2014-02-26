@@ -56,3 +56,26 @@ Once that's done, create a `servers.html.twig` and a `tubes.html.twig` file in
 your new webstalk templates directory. See `src/PMG/Webstalk/Resources/views`
 for how those files might work and to get an idea of the context variables
 passed in.
+
+## Running the Tests
+
+Webstalk has two sets of tests: unit and integration. Unit tests cover all of
+its internal code. Integration tests cover the areas where webstalk touches the
+outside world (this includes external libraries, which are wrapped up in adapters).
+
+Composer install with `--dev` flag (the default behavior). Then run
+`/vendor/bin/phpunit`. This will run both test suites.
+
+You'll probably see some tests skipped, those are tests that require a local
+copy of beanstalkd running. So start it up! If it's running on localhost with
+the default port (11300), that's all you'll need to do: just run the tests again.
+
+If not, set the `BEANSTALKD_HOST` and `BEANSTALKD_PORT` environment variables
+and running the tests.
+
+    $ BEANSTALKD_PORT=11301 ./vendor/bin/phpunit
+
+You can also just run a single test suite:
+
+    $ ./vendor/bin/phpunit --testsuite Unit
+    $ ./vendor/bin/phpunit --testsuite Integration
