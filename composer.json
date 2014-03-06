@@ -1,6 +1,7 @@
 {
     "name": "pmg/webstalk"
     , "description": "A set of silex utilities for creating a beanstalkd web interface"
+    , "license": "Apache-2.0"
     , "authors": [
         { "name": "Christopher Davis", "email": "chris@pmg.co" }
     ]
