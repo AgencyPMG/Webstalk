@@ -42,7 +42,7 @@ class PheanstalkAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $host = getenv('BEANSTALKD_HOST') ?: 'localhost';
         $port = getenv('BEANSTALKD_PORT') ?: 11300;
-        $this->conn = new \Pheanstalk_Pheanstalk($host, $port);
+        $this->conn = new \Pheanstalk\Pheanstalk($host, $port);
 
         if (!$this->conn->getConnection()->isServiceListening()) {
             $this->markTestSkipped(sprintf(

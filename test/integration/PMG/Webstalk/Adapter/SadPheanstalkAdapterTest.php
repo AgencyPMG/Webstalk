@@ -43,7 +43,7 @@ class SadPheanstalkAdapterTest extends \PHPUnit_Framework_TestCase
         $host = getenv('BEANSTALKD_HOST') ?: 'localhost';
         $port = getenv('BEANSTALKD_PORT') ?: 11300;
         // make the connection fail!
-        $this->conn = new \Pheanstalk_Pheanstalk($host, $port+1);
+        $this->conn = new \Pheanstalk\Pheanstalk($host, $port+1);
         $this->adapter = new PheanstalkAdapter($this->conn);
     }
 }
