@@ -26,8 +26,7 @@ class PheanstalkAdapter implements Adapter
      * the pheanstalk backend.
      *
      * @since   1.0
-     * @access  private
-     * @var     Pheanstalk_PheanstalkInterface
+     * @var     Pheanstalk\PheanstalkInterface
      */
     private $conn;
 
@@ -39,7 +38,7 @@ class PheanstalkAdapter implements Adapter
      * @param   Pheanstalk_PheanstalkInterface $conn
      * @return  void
      */
-    public function __construct(\Pheanstalk_PheanstalkInterface $conn)
+    public function __construct(\Pheanstalk\PheanstalkInterface $conn)
     {
         $this->conn = $conn;
     }

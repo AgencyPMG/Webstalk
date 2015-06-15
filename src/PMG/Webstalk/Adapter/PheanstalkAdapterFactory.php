@@ -26,7 +26,7 @@ class PheanstalkAdapterFactory implements AdapterFactory
     public function create(Server $server)
     {
         return new PheanstalkAdapter(
-            new \Pheanstalk_Pheanstalk($server->getHost(), $server->getPort())
+            new \Pheanstalk\Pheanstalk($server->getHost(), $server->getPort())
         );
     }
 }
